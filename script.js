@@ -10,12 +10,19 @@ const openBtn = document.querySelector("[data-open-modal]");
 const closeBtn = document.querySelector("[data-close-modal]");
 const submitBtn = document.querySelector("form button");
 const dialog = document.querySelector("dialog");
-function Book(author, title, pages, read) {
-    this.author = author,
-    this.title = title,
-    this.pages = Number(pages),
-    this.id = crypto.randomUUID();
-    this.readingStatus = read;
+class Book {
+    constructor(author, title, pages, read)
+    {
+        this.author = author,
+        this.title = title,
+        this.pages = Number(pages),
+        this.id = crypto.randomUUID();
+        this.readingStatus = read;
+    }
+    changeProperty() {
+        if(this.readingStatus) this.readingStatus = false;
+        else this.readingStatus = true;
+    }
 };
 
 const myLibrary = [];
