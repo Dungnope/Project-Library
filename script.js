@@ -21,6 +21,9 @@ class Book {
     }
 
 };
+if(!localStorage.getItem("books")){
+    localStorage.setItem("books", JSON.stringify([new Book("Stan Lee", "Spider Man", 232, false)]));
+}
 
 const myLibrary = JSON.parse(localStorage.getItem("books"));
 
