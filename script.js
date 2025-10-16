@@ -19,23 +19,11 @@ class Book {
         this.id = crypto.randomUUID();
         this.readingStatus = read;
     }
-    changeProperty() {
-        if(this.readingStatus) this.readingStatus = false;
-        else this.readingStatus = true;
-    }
+
 };
 
-const myLibrary = [];
+const myLibrary = JSON.parse(localStorage.getItem("books"));
 
-myLibrary.push(new Book("Stan Lee", "SpiderMan", 69, true));
-myLibrary.push(new Book("Jimmy", "MrBeast", 642, false));
-Book.prototype.changeProperty = function(){
-        if(this.readingStatus)
-         {
-            this.readingStatus = false;
-         }
-         else this.readingStatus = true;
-}
 showBook();
 
 window.addEventListener("keydown", (event) => {
@@ -66,11 +54,21 @@ submitBtn.addEventListener("click", (event) => {
 //Create new book
 function newBook(){
     const aBook = new Book(author.value, title.value, pages.value, readCheck.checked);
+    const bookList = localStorage.getItem("books");
+    const bookListArr = JSON.parse(bookList);
+    if(bookList){
+        bookListArr.push(aBook);
+        localStorage.setItem("books", JSON.stringify(bookListArr));
+    }
+    else{
+        localStorage.setItem("books", JSON.stringify([aBook]));
+    }
     myLibrary.push(aBook);
 }
 
 function removeBook(index){
     myLibrary.splice(index, 1);
+    localStorage.setItem("books", JSON.stringify(myLibrary));
     showBook();
 }
 
@@ -79,6 +77,12 @@ function statusColor(item, buttonSelect)
     buttonSelect.className = '';
     if(item.readingStatus) buttonSelect.classList.add("hadread"), buttonSelect.textContent = `Read`;
     else buttonSelect.classList.add("notread"), buttonSelect.textContent = `Not Read`;
+    localStorage.setItem("books", JSON.stringify(myLibrary));
+}
+
+function changeProperty(target){
+    if(target.readingStatus) target.readingStatus = false;
+    else target.readingStatus = true;
 }
 
 function takeIndex(item)
@@ -136,7 +140,7 @@ Box.addEventListener("click", (e) => {
     {
         if(!changeBtn.id.includes("delete__"))
         {
-            myLibrary[takeIndex(e.target)].changeProperty();
+            changeProperty(myLibrary[takeIndex(e.target)]);
             statusColor( myLibrary[takeIndex(e.target)], changeBtn);
         }
         else{
