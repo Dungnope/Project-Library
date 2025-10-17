@@ -38,7 +38,8 @@ window.addEventListener("keydown", (event) => {
 
 //form function 
 openBtn.addEventListener("click", (event) => {
-    author.value = title.value = pages.value = "";
+    author.value = title.value = "";
+    pages.value = 2;
     readCheck.checked = false;
     dialog.showModal();
 })
@@ -49,9 +50,16 @@ closeBtn.addEventListener("click", (event) => {
 
 submitBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    newBook();
-    dialog.close();
-    showBook();
+    event.stopPropagation();
+    if(!titleInput.validity.valueMissing && !authorInput.validity.valueMissing){
+        newBook();
+        dialog.close();
+        showBook();
+    }
+    else{
+        showError(titleInput);
+        showError(authorInput);
+    }
 })
 
 //Create new book
@@ -151,3 +159,50 @@ Box.addEventListener("click", (e) => {
         }
     }
 })
+
+//Form validation
+const titleInput = document.getElementById("Book__title");
+const authorInput = document.getElementById("Book__author");
+const pageNumberInput = document.getElementById("Book__pages");
+const titleInvalid = document.querySelector(".invalid_title");
+const authorInvalid = document.querySelector(".invalid_author");
+titleInput.addEventListener("input", (event) => {
+    if(titleInput.validity.typeMismatch){
+        titleInput.setCustomValidity("You can not blank this field");
+    }
+    else{
+        titleInput.setCustomValidity("");
+    }
+    showError(event.currentTarget);
+})
+
+authorInput.addEventListener("input", (event) => {
+    if(authorInput.validity.typeMismatch){
+        authorInput.setCustomValidity("You can not blank this field");
+    }
+    else{
+        authorInput.setCustomValidity("");
+    }
+    showError(event.currentTarget);
+})
+
+function showError(targetItem) {
+    if(targetItem.name === "book__name"){
+        //blank field
+        if(targetItem.validity.valueMissing){
+            titleInvalid.textContent = "This field can't be blanked";
+        }
+        else{
+            titleInvalid.textContent = "";
+        }
+    }
+    else if(targetItem.name === "author__name"){
+        if(targetItem.validity.valueMissing){
+            authorInvalid.textContent = "This field can't be blanked";
+        }
+        else{
+            authorInvalid.textContent = "";
+        }
+    }
+
+}

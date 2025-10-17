@@ -18,21 +18,23 @@
     <main class="container">
             <dialog data-modal>
                 <span data-close-modal><i class="fa-solid fa-x"></i></span>
-                <form action="" class="form__info">
+                <form action="" class="form__info" novalidate>
                     <fieldset>
                         <legend>Book Information</legend>
                         <label for="Book__title">Title</label><br>
-                        <input type="text" name="book__name" id="Book__title" required /><br>
+                        <span class="invalid_title" aria-live="polite"></span>
+                        <input type="text" name="book__name" id="Book__title" required minlength="1" "/><br>
                         <label for="Book__author">Author</label><br>
-                        <input type="text" name="author__name" id="Book__author" required /><br>
+                        <span class="invalid_author" aria-live="polite"></span>
+                        <input type="text" name="author__name" id="Book__author" required minlength="1"/><br>
                         <label for="Book__pages">Pages</label><br>
-                        <input required type="number" name="page__number" id="Book__pages" min="1" /><br>
+                        <input type="number" name="page__number" id="Book__pages" value="2" min="2" max="10000" required/><br>
                     </fieldset>
                     <div>
                         <label for="Book__ask">Had you read?</label>
                         <input type="checkbox" id="Book__ask">
                     </div>
-                    <button type="submit">Add</button>
+                    <button newbook>Add</button>
                 </form>
             </dialog>
     <ul class="container__list">
